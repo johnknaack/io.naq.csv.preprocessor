@@ -1,21 +1,21 @@
 import inquirer from 'inquirer';
 import cli from './src/cli.js';
 import fws from 'fixed-width-string';
-import Task from './task.js';
+import Task from './src/task.js';
 
 // Tasks
-import LoadFields from './load_fields.js';
-import EvalFields from './eval_fields.js';
-import CreateCustomFields from './create_custom_fields.js';
-import CreateGroups from './create_groups.js';
-import EnhanceJSON from './enhance_json.js';
-import Compare from './compare.js';
-import WriteFieldsCsv from './write_fields_csv.js';
-import WriteFieldsJson from './write_fields_json.js';
-import WriteFieldsTxt from './write_fields_txt.js';
-import WriteGroupsCsv from './write_groups_csv.js';
-import WriteObjectJson from './write_object_json.js';
-import Server from './Server.js';
+import LoadFields from './src/load_fields.js';
+import EvalFields from './src/eval_fields.js';
+import CreateCustomFields from './src/create_custom_fields.js';
+import CreateGroups from './src/create_groups.js';
+import EnhanceJSON from './src/enhance_json.js';
+import Compare from './src/compare.js';
+import WriteFieldsCsv from './src/write_fields_csv.js';
+import WriteFieldsJson from './src/write_fields_json.js';
+import WriteFieldsTxt from './src/write_fields_txt.js';
+import WriteGroupsCsv from './src/write_groups_csv.js';
+import WriteObjectJson from './src/write_object_json.js';
+import Server from './src/Server.js';
 
 // Config
 const TASK_PAD = 21;

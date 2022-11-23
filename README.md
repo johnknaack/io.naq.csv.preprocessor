@@ -2,7 +2,7 @@
 Imports and processes CSV files to generate flags and groups for use when loading data.
 
 ## Prerequisite
-- Download CSV files to `./data/`.
+- Download CSV files to `./data/` or use provided `./data/sample.csv`
 - Run `npm i`.
 
 ## Run

@@ -1,7 +1,7 @@
 import fs from 'fs';
 import diff2html from 'diff2html';
 import readFileGo from 'readfile-go';
-import Options from './src/options.js';
+import Options from '../src/options.js';
 import unidiff  from 'unidiff';
 import Task from './task.js';
 
