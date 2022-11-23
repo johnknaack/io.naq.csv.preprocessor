@@ -1,0 +1,474 @@
+<html>
+<head>
+    <script src="https://codemirror.net/5/lib/codemirror.js"></script>
+    <link rel="stylesheet" href="https://codemirror.net/5/lib/codemirror.css"> 
+    <script src="https://codemirror.net/5/mode/javascript/javascript.js"></script>
+
+    <link rel="stylesheet" href="https://codemirror.net/5/addon/merge/merge.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/diff_match_patch/20121119/diff_match_patch.js"></script>
+    <script src="https://codemirror.net/5/addon/merge/merge.js"></script>
+
+    <link rel="stylesheet" href="https://codemirror.net/5/theme/neat.css">
+    <link rel="stylesheet" href="https://codemirror.net/5/theme/eclipse.css">
+    <link rel="stylesheet" href="https://codemirror.net/5/theme/paraiso-light.css">
+    <link rel="stylesheet" href="https://codemirror.net/5/theme/base16-light.css">
+    <link rel="stylesheet" href="https://codemirror.net/5/theme/mbo.css">
+
+    <link rel="stylesheet" href="https://codemirror.net/5/addon/scroll/simplescrollbars.css">
+    <script src="https://codemirror.net/5/addon/scroll/simplescrollbars.js"></script>
+
+    <link rel="stylesheet" href="https://codemirror.net/5/addon/fold/foldgutter.css">
+    <script src="https://codemirror.net/5/addon/fold/foldcode.js"></script>
+    <script src="https://codemirror.net/5/addon/fold/foldgutter.js"></script>
+    <script src="https://codemirror.net/5/addon/fold/brace-fold.js"></script>
+    <script src="https://codemirror.net/5/addon/fold/indent-fold.js"></script>
+    <script src="https://codemirror.net/5/addon/fold/comment-fold.js"></script>
+
+    <link rel="stylesheet" href="https://codemirror.net/5/addon/dialog/dialog.css">
+    <link rel="stylesheet" href="https://codemirror.net/5/addon/search/matchesonscrollbar.css">
+    <script src="https://codemirror.net/5/addon/dialog/dialog.js"></script>
+    <script src="https://codemirror.net/5/addon/search/searchcursor.js"></script>
+    <script src="https://codemirror.net/5/addon/search/search.js"></script>
+    <script src="https://codemirror.net/5/addon/scroll/annotatescrollbar.js"></script>
+    <script src="https://codemirror.net/5/addon/search/matchesonscrollbar.js"></script>
+    <script src="https://codemirror.net/5/addon/search/jump-to-line.js"></script>
+
+    <style>
+        body {
+            background-color: #e7e7e7;
+        }
+
+        .CodeMirror {border: 1px solid black; font-size:13px; height: 200px;}
+        .expected {border: 1px solid black; padding: 8px; }
+        .expectedCode {height: auto;}
+        .title {
+            text-shadow: 2px 4px 16px rgb(183 183 183);
+            font-weight: 600;
+            background-image: linear-gradient(to right, #000000, #777777);
+            color: transparent;
+            font-family: "Courier Prime", monospace;
+            background-clip: text;
+            -webkit-background-clip: text;
+            padding-top: 2px;
+            margin-bottom: -7px;
+            font-size: 1.3em;
+        }
+
+        .CodeMirror-merge, .CodeMirror-merge .CodeMirror {
+            height: 350px;
+        }
+
+        #diff > .CodeMirror-merge, #diff > .CodeMirror-merge .CodeMirror {
+            height: 450px;
+        }
+
+        .code {
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 3px 3px 6px rgb(0 0 0 / 30%);
+            margin: 8px;
+        }
+
+        .CodeMirror-merge-2pane .CodeMirror-merge-pane {
+            width: 50%;
+        }
+        .CodeMirror-merge-2pane .CodeMirror-merge-gap {
+            width: 0%;
+            display: none;
+        }
+
+        
+        .CodeMirror-merge-r-deleted, .CodeMirror-merge-l-deleted {
+            background-image: unset;
+            background-position: unset;
+            background-repeat: unset;
+            background-color: #ff000070;
+        }
+
+        .CodeMirror-merge-r-inserted, .CodeMirror-merge-l-inserted {
+            background-image: unset;
+            background-position: unset;
+            background-repeat: unset;
+            background-color: #00ff1f70;
+
+        }
+
+        /*
+        button:not(#sample) { 
+            width: 260px; 
+            margin: 8px; 
+            padding: 8px; 
+            color: #15a7e5; 
+            font-weight: bold;
+            background-color: white;
+        }*/
+
+        /*
+       button[id="sample"] {
+            color: #15a7e5;
+            float: right;
+            margin-right: 10px;
+            background-color: white;
+        }*/
+
+        .guide {
+            padding: 8px;
+            font-family: "Courier Prime", monospace;
+            margin-bottom: 6px;
+        }
+
+        .CodeMirror-merge-r-chunk, .CodeMirror-merge-l-chunk {
+            background: #90f38614;
+        }
+        .CodeMirror-merge-r-chunk-start, .CodeMirror-merge-l-chunk-start {
+            border-top: unset;/* 1px solid #888823; */
+        }
+        .CodeMirror-merge-r-chunk-end, .CodeMirror-merge-l-chunk-end {
+            border-bottom: unset;/* 1px solid #888823; */
+        }
+        
+        .cm-s-mbo span.cm-comment {
+            color: #dddddd;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        .CodeMirror-simplescroll-horizontal, .CodeMirror-simplescroll-vertical {
+            position: absolute;
+            z-index: 6;
+            background: unset;
+        }
+        .CodeMirror-simplescroll-horizontal div, .CodeMirror-simplescroll-vertical div {
+            background: #cccccc36;
+            border: 1px solid #bbb3;
+        }
+        .CodeMirror-scrollbar-filler {
+            display: none !important;
+        }
+
+        .CodeMirror-merge-collapsed-widget {
+            background: unset;
+            border: unset;
+        }
+
+        .CodeMirror-merge-collapsed-line {
+            margin: 8px 0px;
+        }
+
+        .inline-code-msg {
+            background-color: #ffffff;
+            box-shadow: inset rgb(94 94 94) 0px 2px 4px -1px;
+            border-radius: 12px;
+            shadow: 1px back;
+            margin: 2px 8px;
+            padding: 4px 20px;
+            color: black;
+            display: inline-block;
+        }
+
+        .inline-code-msg-error {
+            background-color: #cc6363;
+            color: white;
+            box-shadow: inset rgb(44 44 44) 0px 2px 5px -1px;
+        }
+
+
+        .progress-bar {
+            height: 4px;
+            background-color: rgba(5, 114, 206, 0.2);
+            width: 100%;
+            overflow: hidden;
+            }
+
+            .progress-bar-value {
+            width: 100%;
+            height: 100%;
+            background-color: rgb(5, 114, 206);
+            animation: indeterminateAnimation 1s infinite linear;
+            transform-origin: 0% 50%;
+            }
+
+            @keyframes indeterminateAnimation {
+            0% {
+                transform:  translateX(0) scaleX(0);
+            }
+            40% {
+                transform:  translateX(0) scaleX(0.4);
+            }
+            100% {
+                transform:  translateX(100%) scaleX(0.5);
+            }
+        }
+
+        button {
+            background: #4e4e4e;
+            border-radius: 999px;
+            box-shadow: #4a4a4a 7px 12px 20px -10px;
+            box-sizing: border-box;
+            color: #ffffff;
+            cursor: pointer;
+            /*font-family: Inter,Helvetica,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Noto Color Emoji","Segoe UI Symbol","Android Emoji",EmojiSymbols,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans",sans-serif;*/
+            font-family: "Courier Prime", monospace;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 24px;
+            opacity: 1;
+            outline: 0 solid transparent;
+            padding: 8px 18px;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            width: fit-content;
+            word-break: break-word;
+            border: 0;
+            margin: 12px;
+        }
+
+        .btn-large {
+            width: 300px;
+        }
+
+        button:focus {
+            box-shadow: #4a4a4a 7px 12px 12px -10px;
+        }
+
+        button:hover {
+            box-shadow: #4a4a4a 7px 12px 12px -10px;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            box-shadow:  #0b0b0b 0 3px 7px inset;
+            transform: translateY(2px);
+        }
+
+        .btn-group {
+            display: inline-grid;
+        }
+
+       button.sample {
+            font-size: 12px;
+            float: right;
+            margin-right: 10px;
+            font-weight: 900;
+            line-height: unset;
+            margin: -10px 10px;
+            padding: 7px 18px;
+        }
+
+        .checkbox-wrapper-2 {
+            display: table;
+        }
+
+        .btn-group > .checkbox-wrapper-2 {
+            margin-left: 30px;
+        }
+
+        .checkbox-wrapper-2 .ikxBAC {
+          appearance: none;
+          background-color: #a3a4a5;
+          border-radius: 72px;
+          border-style: none;
+          flex-shrink: 0;
+          height: 20px;
+          margin: 0;
+          position: relative;
+          width: 30px;
+        }
+      
+        .checkbox-wrapper-2 .ikxBAC::before {
+          bottom: -6px;
+          content: "";
+          left: -6px;
+          position: absolute;
+          right: -6px;
+          top: -6px;
+        }
+      
+        .checkbox-wrapper-2 .ikxBAC,
+        .checkbox-wrapper-2 .ikxBAC::after {
+          transition: all 100ms ease-out;
+        }
+      
+        .checkbox-wrapper-2 .ikxBAC::after {
+          background-color: #fff;
+          border-radius: 50%;
+          content: "";
+          height: 14px;
+          left: 3px;
+          position: absolute;
+          top: 3px;
+          width: 14px;
+        }
+      
+        .checkbox-wrapper-2 input[type=checkbox] {
+          cursor: default;
+        }
+      
+        .checkbox-wrapper-2 .ikxBAC:hover {
+          background-color: #76808a;
+          transition-duration: 0s;
+        }
+      
+        .checkbox-wrapper-2 .ikxBAC:checked {
+          background-color: #6e79d6;
+        }
+      
+        .checkbox-wrapper-2 .ikxBAC:checked::after {
+          background-color: #fff;
+          left: 13px;
+        }
+      
+        .checkbox-wrapper-2 :focus:not(.focus-visible) {
+          outline: 0;
+        }
+      
+        .checkbox-wrapper-2 .ikxBAC:checked:hover {
+          background-color: #535db3;
+        }
+
+        .checkbox-wrapper-2 span {
+            display: table-cell;
+            vertical-align: middle;
+            font-family: "Courier Prime", monospace;
+            font-weight: 100;
+            text-shadow: 2px 4px 16px rgb(197 197 197);
+            padding-left: 8px;
+        }
+  
+        .moveUpAnimation {
+            -webkit-animation-duration: 0.5s;
+            animation-duration: 0.5s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+        }
+
+        @-webkit-keyframes moveUp {
+            0% {-webkit-transform: translateX(-0);}
+            100% {-webkit-transform: translateX(-145px);}
+         }
+         
+         @keyframes moveUp {
+            0% {transform: translateY(-0);}
+            100% {transform: translateY(-145px);}
+         }
+
+         .moveUp {
+            -webkit-animation-name: moveUp;
+            animation-name: moveUp;
+         }
+
+        .fadeOutAnimation {
+            -webkit-animation-duration: 1s;
+            animation-duration: 1s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+            opacity: 1;
+        }
+
+        @-webkit-keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                display: none;
+                opacity: 0;
+            }
+         }
+         
+         @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .fadeOut {
+            -webkit-animation-name: fadeOut;
+            animation-name: fadeOut;
+         }
+
+
+
+
+        #outputArea {
+            -webkit-animation-duration: 1s;
+            animation-duration: 1s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+            opacity: 0;
+        }
+
+        @-webkit-keyframes fadeIn {
+            0% {opacity: 0;}
+            100% {opacity: 1;}
+         }
+         
+         @keyframes fadeIn {
+            0% {opacity: 0;}
+            100% {opacity: 1;}
+         }
+
+        .fadeIn {
+            -webkit-animation-name: fadeIn;
+            animation-name: fadeIn;
+         }
+
+         /*https://www.tutorialspoint.com/css/css_animation.htm*/
+
+    </style>
+</head>
+<body>
+    <div id="expected" class="moveUpAnimation fadeOutAnimation">
+        <div id="expected1" class="expectedCode code"></div>
+
+        <div class="title">Guide</div>
+        <div class="guide">
+            <div><b>1:</b> Provide a request</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;Paste Processed Json</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;Click <span style="color: #15a7e5; font-weight: bold;">Pull Request</span> to pull Object from Csv</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;Click <span style="color: #15a7e5; font-weight: bold;">Load Sample Json</span> to load sample Object</div>
+            <div><b>2:</b> Click the <span style="color: #15a7e5; font-weight: bold;">Compare Json to Csv</span> to build Object from Csv and compare to Json</div>
+            <div><b>3:</b> Click the <span style="color: #15a7e5; font-weight: bold;">Enhance Json</span> to parse Json and apply pending tickets changes</div>
+        </div>
+    </div>
+
+    <div class="moveUpAnimation">
+        <div class="title">Processed Json <button id="sample" class="sample">Load Sample Json</button><button id="pull-request" class="sample">Pull Request</button></div>
+        <div class="code">
+            <textarea id="in" cols="40" rows="5"></textarea>
+        </div>
+        
+        <div class="">
+            <div class="btn-group">
+                <button id="compare" class="btn-large">Compare Json to Csv</button> 
+            </div>
+            <div class="btn-group">
+                <button id="enhance" class="btn-large">Enhance Json</button>
+                <div class="checkbox-wrapper-2">
+                    <input id="cbIncludeLinked" type="checkbox" class="sc-gJwTLC ikxBAC" checked=true><span>Include Linked Objects</span>
+                </div>
+            </div>
+        </div>
+        
+        <div id="outputArea" style="display: block;">    
+            <div class="title">Csv Generated Json</div>
+            <div class="code">
+                <textarea id="out" cols="40" rows="5"></textarea>
+            </div>
+
+            <div class="title">Differences between Database Json (Left) and Csv Generated Json (Right)</div>
+            <div id="diff" class="code"></div>
+
+            <button id="collapse" data-targetid="diff">Toogle Collapse</button> 
+            <button id="next" data-targetid="diff" sytle="displya: none">Next</button>
+            <button id="start-over" data-targetid="diff">Start Over</button> 
+        </div>
+    </div>
+
+    <script src="./enhance.js"></script>
+    <script src="./sample.js"></script>
+</body>
+</html>
