@@ -1,7 +1,7 @@
 import fs from 'fs';
-import cli from './src/cli.js';
-import Options from './src/options.js';
-import Asset from './src/asset.js';
+import cli from '../src/cli.js';
+import Options from '../src/options.js';
+import Asset from '../src/asset.js';
 import Task from './task.js';
 
 export default class WriteObjectJson extends Task {

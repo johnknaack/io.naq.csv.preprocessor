@@ -1,7 +1,7 @@
 import fs from 'fs';
-import sql from './src/sqlite.js';
-import cli from './src/cli.js';
-import Options from './src/options.js';
+import sql from '../src/sqlite.js';
+import cli from '../src/cli.js';
+import Options from '../src/options.js';
 import fws from 'fixed-width-string';
 import Task from './task.js';
 

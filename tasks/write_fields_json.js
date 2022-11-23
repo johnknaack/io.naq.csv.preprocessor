@@ -1,7 +1,7 @@
 import fs from 'fs';
-import sql from './src/sqlite.js';
-import cli from './src/cli.js';
-import Options from './src/options.js';
+import sql from '../src/sqlite.js';
+import cli from '../src/cli.js';
+import Options from '../src/options.js';
 import Task from './task.js';
 
 export default class WriteFieldsJson extends Task {

@@ -1,4 +1,4 @@
-import Asset from './src/asset.js';
+import Asset from '../src/asset.js';
 import clipboard from 'clipboardy';
 import Task from './task.js';
 

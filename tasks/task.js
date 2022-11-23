@@ -1,7 +1,7 @@
 import sqlite3 from 'sqlite3';
 import ora from 'ora';
-import cli from './src/cli.js';
-import Options from './src/options.js';
+import cli from '../src/cli.js';
+import Options from '../src/options.js';
 import { program } from 'commander';
 
 export default class Task {

@@ -1,7 +1,7 @@
 import fs from 'fs';
-import sql from './src/sqlite.js';
+import sql from '../src/sqlite.js';
 import fastCsv from 'fast-csv';
-import cli from './src/cli.js';
+import cli from '../src/cli.js';
 import Task from './task.js';
 
 export default class LoadFields extends Task {

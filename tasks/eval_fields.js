@@ -1,5 +1,5 @@
-import sql from './src/sqlite.js';
-import cli from './src/cli.js';
+import sql from '../src/sqlite.js';
+import cli from '../src/cli.js';
 import Task from './task.js';
 
 export default class EvalFields extends Task {

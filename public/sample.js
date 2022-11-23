@@ -15,7 +15,8 @@ document.getElementById('pull-request').addEventListener("click", function (e) {
 });
 
 const pullRequest = {
-    "Entity ID": 113752
+    "Entity ID": "first",
+    "Note": "Will pull first record in db. Change Entity ID to a real value."
   }
 
 const obj = {

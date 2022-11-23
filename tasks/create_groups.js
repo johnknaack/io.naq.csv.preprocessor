@@ -1,8 +1,8 @@
 import fws from 'fixed-width-string';
 import chalk from 'chalk';
-import sql from './src/sqlite.js';
-import Options from './src/options.js';
-import cli from './src/cli.js';
+import sql from '../src/sqlite.js';
+import Options from '../src/options.js';
+import cli from '../src/cli.js';
 import Task from './task.js';
 
 export default class CreateGroups extends Task {
