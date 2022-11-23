@@ -65,7 +65,7 @@ export default class Task {
         if (!!req.outFile2 && !args.outFile2 && !prevOpt?.outFile2) prompts.outFile2 = req.outFile2;
         if (req.sortBy && !args.sortBy && !prevOpt?.sortBy) prompts.sortBy = true;
         if (!!req.clientConfig && !args.clientConfig && !prevOpt?.clientConfig) prompts.clientConfig = req.clientConfig;
-        if (req.tunnel && !args.tunnel === undefined && !prevOpt?.tunnel) prompts.tunnel = true;
+        if (req.tunnel && args.tunnel === undefined && !prevOpt?.tunnel) prompts.tunnel = true;
 
         // Prompt For Missing Requirements
         let answers = await Options.askSync(prompts, prevOpt);

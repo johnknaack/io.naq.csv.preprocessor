@@ -77,6 +77,7 @@ class Options {
 				name: 'csvFile',
 				message: 'Select csv file:',
 				pageSize: 30,
+				validate: (input) => input.length !== 0,
 				choices: this.getFileList({path: DATA_PATH, ext: '.csv', showNew: false}),
 			});
 		}
@@ -90,6 +91,7 @@ class Options {
 					{ value: 'name', name: 'Name' },
 					{ value: 'position', name: 'Position' }
 				],
+				validate: (input) => input.length !== 0,
 				when: async () => {
 					const choices = await prompts.find(p => p.name === 'sortBy').choices;
 					if (prevOpt.selectAll) {
@@ -103,15 +105,14 @@ class Options {
 
 		if (types.tunnel) {
 			prompts.push({
-				type: 'checkbox',
+				type: 'list',
 				name: 'tunnel',
 				message: 'Start web tunnel:',
 				choices: [
-					{ value: false, name: 'No', default: true },
+					{ value: false, name: 'No' },
 					{ value: true, name: 'Yes' }
 				],
 				when: async () => {
-					const choices = await prompts.find(p => p.name === 'tunnel').choices;
 					if (prevOpt.selectAll) {
 						defaults.tunnel = false;
 						return false;

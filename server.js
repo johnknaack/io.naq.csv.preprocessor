@@ -61,7 +61,7 @@ export default class Server extends Task {
             // Start Tunnel
             if (opt.tunnel) {
                 this.spinner.start('Local Tunnel Starting');
-                const tunnel = await localtunnel({ port: port, subdomain: `csv.preprocessor-${(Math.random() + 1).toString(36).substring(7)}` });
+                const tunnel = await localtunnel({ port: port });
                 this.spinner.succeed(`Local Tunnel Ready ${tunnel.url}`);
                 tunnel.on('close', () => console.log('Local Tunnel Closed'));
             }

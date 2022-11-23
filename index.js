@@ -63,6 +63,7 @@ export default class Index extends Task {
                 name: 'task',
                 message: 'What tasks would you like to run?',
                 choices: taskChoices,
+                validate: (input) => input.length !== 0,
                 filter(val) {
                     let tasks = [];
                     val.forEach(t => {
