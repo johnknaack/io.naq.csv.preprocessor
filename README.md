@@ -9,7 +9,7 @@ Imports and processes CSV files to generate flags and groups for use when loadin
 - `npm start` => Runs task selector.
     - Start by selecting __All Processing__ and select all CSV files to load
         ![All Processing](public/img/all.png)
-    - Loading 6 CSV files totaling 900+MB: < 20 min runtime resulting in a 11+GB SQLite DB
+    - Loading 6 CSV files totaling 900+MB takes < 20 min, depending on hardware, resulting in a 11+GB SQLite DB
         ![All Processing](public/img/all_processing.gif)
     - Once data is loaded, Select __Server__ to compare and enhance Json
         - Click __Load Sample Data__ to load sample Object
