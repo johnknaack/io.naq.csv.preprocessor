@@ -14,6 +14,10 @@ export default class Server extends Task {
             tunnel: true
 		}; 
 	}
+
+    constructor (onServer=true) {
+        super(onServer);
+    }
     
 	async run (opt) {
 		const {
@@ -30,27 +34,23 @@ export default class Server extends Task {
 
         app.post('/enhance', async (req, res) => {
             try {
-                const { obj } = await EnhanceJSON.initialize({...opt, obj: JSON.parse(req.body.in), includeLinked: req.body.includeLinked });
+                const { obj } = await EnhanceJSON.initialize({...opt, onServer: true, obj: JSON.parse(req.body.in), includeLinked: req.body.includeLinked });
                 res.json({
                     out: obj
                 });
             } catch (error) {
-                res.json({
-                    out: JSON.stringify({ error })
-                });
+                res.json({ error });
             }
         });
 
         app.post('/object', async (req, res) => {
             try {
-                const { obj } = await WriteObjectJson.initialize({...opt, fromServer: true, id: req.body.id });
+                const { obj } = await WriteObjectJson.initialize({...opt, onServer: true, id: req.body.id });
                 res.json({
                     obj: obj[0]
                 });
             } catch (error) {
-                res.json({
-                    out: JSON.stringify({ error })
-                });
+                res.json({ error });
             }
         });
 

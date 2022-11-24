@@ -43,12 +43,13 @@ class Options {
 				message: 'Select database file:',
 				pageSize: 30,
 				choices: this.getFileList({path: OUTPUT_PATH, ext: '.db', showNew: 'New Database' }),
+				when: async (answers) => !prevOpt.onServer
 			});
 			prompts.push({
 				type: 'input',
 				name: 'dbFileNew',
 				message: 'New DB File Name:',
-				when: (answers) => answers.dbFile === 'new'
+				when: (answers) => !prevOpt.onServer && answers.dbFile === 'new'
 			});
 		}
 
@@ -66,7 +67,7 @@ class Options {
 						defaults.fieldsFile = choices.map(v => v.value);
 						return false;
 					}
-					return true;
+					return !prevOpt.onServer;
 				}
 			});
 		}
@@ -79,6 +80,7 @@ class Options {
 				pageSize: 30,
 				validate: (input) => input.length !== 0,
 				choices: this.getFileList({path: DATA_PATH, ext: '.csv', showNew: false}),
+				when: async (answers) => !prevOpt.onServer
 			});
 		}
 
@@ -98,7 +100,7 @@ class Options {
 						defaults.sortBy = choices.map(v => v.value);
 						return false;
 					}
-					return true;
+					return !prevOpt.onServer;
 				}
 			});
 		}
@@ -153,7 +155,7 @@ class Options {
 						defaults.clientConfig = await this.getClintConfig(choices[0]);
 						return false;
 					}
-					return true;
+					return !prevOpt.onServer;
 				}
 			});
 		}

@@ -151,7 +151,12 @@ const serverCall = (request, btn, callback) => {
     })
         .then((response) => response.json())
         .then((data) => {
-            callback(data);
+            if (data.error) {
+                jsonNew.setValue(JSON.stringify(data, null, 4));
+                addMessage(jsonNew, `<b>Error:</b> ${data.error.message}`, { error: true });
+            } else {
+                callback(data);
+            }
             reset();
         });
 }

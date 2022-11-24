@@ -18,13 +18,14 @@ export default class EnhanceJSON extends Task {
 		const {
 			db,
 			fieldsFile,
-            clientConfig
+            clientConfig,
+            onServer
 		} = opt;
 
         this.spinner.start(`Enhancing JSON Object`);
 
         let obj = opt.obj || {};
-        if (!opt.obj) {
+        if (!onServer) {
             try {
                 obj = JSON.parse(clipboard.readSync());
                 if (!obj._entity_data) throw '_entity_data missing';
@@ -40,7 +41,7 @@ export default class EnhanceJSON extends Task {
         await this.fixPropertiesForRelatedEntityData({ db, fieldsFile: calcedFile, clientConfig, obj: obj._entity_data?._related_entity_data?.['Store Product'] });
         await this.fixPropertiesForServiceProductData({ db, fieldsFile: calcedFile, clientConfig, obj: obj._entity_data?._related_entity_data?.['Service Product'] });
         
-        if (!opt.obj)
+        if (!onServer)
             clipboard.writeSync(JSON.stringify(obj, null, 2));
 
         opt.obj = JSON.stringify(obj);

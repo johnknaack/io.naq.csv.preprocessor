@@ -21,7 +21,7 @@ export default class WriteObjectJson extends Task {
 			db,
 			fieldsFile,
 			clientConfig,
-			fromServer,
+			onServer,
 			id
 		} = opt;
 		if(!opt.obj) opt.obj = [];
@@ -31,7 +31,7 @@ export default class WriteObjectJson extends Task {
 
 		for (var i = 0; i < calcedFile.length; i++) {
 			const file = calcedFile[i];
-			const ffp = new FieldFileProcessor({ db, file, clientConfig, fromServer, id: calcedId, spinner: this.spinner });
+			const ffp = new FieldFileProcessor({ db, file, clientConfig, onServer, id: calcedId, spinner: this.spinner });
 			const obj = await ffp.start();
 			opt.obj.push(obj);
 		}
@@ -43,7 +43,7 @@ class FieldFileProcessor {
 		this.db = opt.db;
 		this.file = opt.file;
 		this.clientConfig = opt.clientConfig;
-		this.fromServer = opt.fromServer;
+		this.onServer = opt.onServer;
 		this.id = opt.id;
 		this.spinner = opt.spinner;
 	}
@@ -54,7 +54,7 @@ class FieldFileProcessor {
 			file,
 			clientConfig,
 			spinner,
-			fromServer,
+			onServer,
 			id
 		} = this;
 
@@ -68,10 +68,10 @@ class FieldFileProcessor {
 			clientConfig,
 			linkedId: id,
 			file,
-			enhance: fromServer === undefined
+			enhance: onServer === undefined
 		});
 		
-		if (!fromServer)
+		if (!onServer)
 			fs.writeFileSync(outFile, JSON.stringify(tree, null, 2));
 
 		spinner.succeed();

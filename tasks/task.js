@@ -25,11 +25,16 @@ export default class Task {
         }
 	}
 
-    constructor () {
+    constructor (onServer) {
         // Create Spinner
-        this.spinner = ora({
-            prefixText: () => ` [${(new Date()).toLocaleTimeString()}]`
-        });
+        this.spinner = new cli.FakeSpinner();
+
+        // Better Spinner if not on server
+        if (!onServer) {
+            this.spinner = ora({
+                prefixText: () => ` [${(new Date()).toLocaleTimeString()}]`
+            });
+        }
     }
 
     static async initialize (prevOpt) {
@@ -54,7 +59,7 @@ export default class Task {
         args.fieldsFile && (args.fieldsFile = [args.fieldsFile]);
         args.dbFile && (prevOpt.dbFile = args.dbFile);
         args.tunnel && (args.tunnel = ['yes', 'true', '1'].indexOf(args.tunnel.toLowerCase()) !== -1);
-        (prevOpt) && (prevOpt.fieldsFile) && (!Array.isArray(prevOpt.fieldsFile)) && (prevOpt.fieldsFile = [prevOpt.fieldsFile])
+        (prevOpt) && (prevOpt.fieldsFile) && (!Array.isArray(prevOpt.fieldsFile)) && (prevOpt.fieldsFile = [prevOpt.fieldsFile]);
 
         // Set Required Prompts
         let prompts = {};
@@ -70,9 +75,21 @@ export default class Task {
         // Prompt For Missing Requirements
         let answers = await Options.askSync(prompts, prevOpt);
 
+        // Can't prompt while on server
+        const unanswered = Object.keys(prompts).filter(p => answers[p] === undefined);
+        if (prevOpt.onServer && unanswered.length > 0) {
+            const message = `Can\'t prompt for questions on server`;
+            cli.logError(cli.red(message) + ': ' + unanswered.join(', '));
+            throw {
+                error: true,
+                message: message,
+                unanswered
+            };
+        }
+
         // Combine Requirements
         let opt = { ...prevOpt, ...args, ...answers, readOnly };
-        const task = new this();
+        const task = new this(prevOpt.onServer);
 
         // Open DB if opt.dbFile is set
         const mode = opt.readOnly ? sqlite3.OPEN_READONLY : null;
